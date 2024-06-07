@@ -46,7 +46,7 @@ def _impl(ctx):
     return [
         DefaultInfo(
             files = depset([ebin]),
-        )
+        ),
     ]
 
 elixir_bytecode = rule(

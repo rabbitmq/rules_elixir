@@ -9,18 +9,18 @@ package(
 
 elixir_tool(
     name = "elixirc_wrapper",
-    tool = "elixirc",
     out = "elixirc",
+    tool = "elixirc",
 )
 
 elixir_tool(
     name = "elixir_wrapper",
-    tool = "elixir",
     out = "elixir",
+    tool = "elixir",
 )
 
 elixir_tool(
     name = "iex_wrapper",
-    tool = "iex",
     out = "iex",
+    tool = "iex",
 )

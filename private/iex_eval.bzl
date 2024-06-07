@@ -10,9 +10,13 @@ def _impl(ctx):
         mnemonic = "IEX",
         env = {
             "SRCS": ctx.configuration.host_path_separator.join([
-                src.path for src in ctx.files.srcs]),
+                src.path
+                for src in ctx.files.srcs
+            ]),
             "OUTS": ctx.configuration.host_path_separator.join([
-                out.path for out in ctx.outputs.outs]),
+                out.path
+                for out in ctx.outputs.outs
+            ]),
         },
         arguments = [args],
     )
