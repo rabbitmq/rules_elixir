@@ -45,7 +45,7 @@ cp -r "{elixir_home}"/lib/{app}/ebin/* {ebin}
 elixir_as_app = rule(
     implementation = _impl,
     attrs = {
-        "app": attr.string(default = "elixir"),
+        "app": attr.string(mandatory = True),
     },
     toolchains = ["//:toolchain_type"],
     provides = [ErlangAppInfo],

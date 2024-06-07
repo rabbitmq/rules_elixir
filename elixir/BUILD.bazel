@@ -2,6 +2,7 @@ load(":elixir_as_app.bzl", "elixir_as_app")
 
 elixir_as_app(
     name = "elixir",
+    app = "elixir",
     visibility = ["//visibility:public"],
 )
 

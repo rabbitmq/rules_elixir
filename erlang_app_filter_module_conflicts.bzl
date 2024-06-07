@@ -54,7 +54,7 @@ done
             runfiles = runfiles,
         ),
         ErlangAppInfo(
-            app_name = "elixir",
+            app_name = lib_info.app_name,
             include = lib_info.include,
             beam = [new_beam_files],
             priv = lib_info.priv,
