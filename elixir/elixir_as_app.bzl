@@ -7,7 +7,7 @@ load(
     "path_join",
 )
 load(
-    "//:elixir_toolchain.bzl",
+    "//private:elixir_toolchain.bzl",
     "elixir_dirs",
 )
 

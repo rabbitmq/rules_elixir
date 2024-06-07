@@ -1,5 +1,5 @@
 load(
-    "//:elixir_toolchain.bzl",
+    "//private:elixir_toolchain.bzl",
     "elixir_dirs",
     "erlang_dirs",
     "maybe_install_erlang",
