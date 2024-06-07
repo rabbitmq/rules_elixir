@@ -7,7 +7,7 @@ load(
     "path_join",
 )
 load(
-    ":elixir_toolchain.bzl",
+    "//:elixir_toolchain.bzl",
     "elixir_dirs",
 )
 
@@ -47,6 +47,6 @@ elixir_as_app = rule(
     attrs = {
         "app": attr.string(default = "elixir"),
     },
-    toolchains = [":toolchain_type"],
+    toolchains = ["//:toolchain_type"],
     provides = [ErlangAppInfo],
 )

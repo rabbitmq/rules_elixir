@@ -23,6 +23,7 @@ def _impl(ctx):
         dir = erl_libs_dir,
         deps = flat_deps(ctx.attr.deps),
         ez_deps = ctx.files.ez_deps,
+        expand_ezs = True,
     )
 
     erl_libs_path = ""
@@ -55,6 +56,8 @@ fi
 
 {env}
 
+{setup}
+
 export PATH="{erlang_home}/bin:$PATH"
 set -x
 "{elixir_home}"/bin/elixirc \\
@@ -67,6 +70,7 @@ set -x
         elixir_home = elixir_home,
         erl_libs_path = erl_libs_path,
         env = env,
+        setup = ctx.attr.setup,
         out_dir = ebin.path,
         elixirc_opts = " ".join(ctx.attr.elixirc_opts),
         srcs = " ".join([f.path for f in ctx.files.srcs]),
@@ -107,11 +111,12 @@ elixir_bytecode = rule(
         "ez_deps": attr.label_list(
             allow_files = [".ez"],
         ),
+        "setup": attr.string(),
         "dest": attr.string(
             mandatory = True,
         ),
-        # "ebin": attr.output(),
-        # "consolidated": attr.output(),
     },
-    toolchains = ["//bazel/elixir:toolchain_type"],
+    toolchains = [
+        ":toolchain_type",
+    ],
 )

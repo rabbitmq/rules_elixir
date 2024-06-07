@@ -11,8 +11,8 @@ def _impl(ctx):
         outputs = [out],
         command = """set -euo pipefail
 
-cp -r {beam_files_dir}/ {out}
-cp {app_file} {out}
+cp -r "{beam_files_dir}"/* "{out}"
+cp "{app_file}" "{out}"
 """.format(
             beam_files_dir = ctx.files.beam_files_dir[0].path,
             app_file = ctx.file.app_file.path,

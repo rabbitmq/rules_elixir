@@ -20,8 +20,6 @@ def _version_identifier(version_string):
         return parts[0]
 
 def _impl(repository_ctx):
-    rabbitmq_server_workspace = repository_ctx.attr.rabbitmq_server_workspace
-
     elixir_installations = _default_elixir_dict(repository_ctx)
     for name in repository_ctx.attr.types.keys():
         if name == _DEFAULT_EXTERNAL_ELIXIR_PACKAGE_NAME:
@@ -44,24 +42,22 @@ def _impl(repository_ctx):
         if props.type == INSTALLATION_TYPE_EXTERNAL:
             repository_ctx.template(
                 "{}/BUILD.bazel".format(name),
-                Label("//bazel/repositories:BUILD_external.tpl"),
+                Label("//repositories:BUILD_external.tpl"),
                 {
                     "%{ELIXIR_HOME}": props.elixir_home,
                     "%{ELIXIR_VERSION_ID}": props.identifier,
-                    "%{RABBITMQ_SERVER_WORKSPACE}": rabbitmq_server_workspace,
                 },
                 False,
             )
         else:
             repository_ctx.template(
                 "{}/BUILD.bazel".format(name),
-                Label("//bazel/repositories:BUILD_internal.tpl"),
+                Label("//repositories:BUILD_internal.tpl"),
                 {
                     "%{URL}": props.url,
                     "%{STRIP_PREFIX}": props.strip_prefix or "",
                     "%{SHA_256}": props.sha256 or "",
                     "%{ELIXIR_VERSION_ID}": props.identifier,
-                    "%{RABBITMQ_SERVER_WORKSPACE}": rabbitmq_server_workspace,
                 },
                 False,
             )
@@ -82,7 +78,7 @@ def _impl(repository_ctx):
 
     repository_ctx.template(
         "defaults.bzl",
-        Label("//bazel/repositories:defaults.bzl.tpl"),
+        Label("//repositories:defaults.bzl.tpl"),
         {
             "%{TOOLCHAINS}": "\n".join([
                 '        "%s",' % t
@@ -95,7 +91,6 @@ def _impl(repository_ctx):
 elixir_config = repository_rule(
     implementation = _impl,
     attrs = {
-        "rabbitmq_server_workspace": attr.string(),
         "types": attr.string_dict(),
         "versions": attr.string_dict(),
         "urls": attr.string_dict(),

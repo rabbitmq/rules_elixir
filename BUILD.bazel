@@ -1,29 +1,15 @@
-load(":elixir_as_app.bzl", "elixir_as_app")
+load(
+    "@bazel_skylib//rules:common_settings.bzl",
+    "string_flag",
+)
+
+string_flag(
+    name = "elixir_home",
+    build_setting_default = "",
+    visibility = ["//visibility:public"],
+)
 
 toolchain_type(
     name = "toolchain_type",
-    visibility = ["//visibility:public"],
-)
-
-elixir_as_app(
-    name = "erlang_app",
-    visibility = ["//visibility:public"],
-)
-
-elixir_as_app(
-    name = "iex",
-    app = "iex",
-    visibility = ["//visibility:public"],
-)
-
-elixir_as_app(
-    name = "logger",
-    app = "logger",
-    visibility = ["//visibility:public"],
-)
-
-elixir_as_app(
-    name = "mix",
-    app = "mix",
     visibility = ["//visibility:public"],
 )

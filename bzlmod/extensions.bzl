@@ -1,15 +1,13 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load(
-    "//bazel/repositories:elixir_config.bzl",
+    "//:elixir.bzl",
+    "DEFAULT_ELIXIR_SHA256",
+    "DEFAULT_ELIXIR_VERSION",
+)
+load(
+    "//repositories:elixir_config.bzl",
     "INSTALLATION_TYPE_EXTERNAL",
     "INSTALLATION_TYPE_INTERNAL",
     _elixir_config_rule = "elixir_config",
-)
-load(
-    "//bazel/elixir:elixir.bzl",
-    "DEFAULT_ELIXIR_SHA256",
-    "DEFAULT_ELIXIR_VERSION",
 )
 
 def _elixir_config(ctx):
@@ -47,7 +45,6 @@ def _elixir_config(ctx):
 
     _elixir_config_rule(
         name = "elixir_config",
-        rabbitmq_server_workspace = "@rabbitmq-server",
         types = types,
         versions = versions,
         urls = urls,
@@ -90,7 +87,3 @@ elixir_config = module_extension(
         "internal_elixir_from_github_release": internal_elixir_from_github_release,
     },
 )
-
-# hex = module_extension(
-#     implementation = _hex,
-# )
