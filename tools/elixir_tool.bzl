@@ -18,7 +18,7 @@ set -euo pipefail
 
 exec \\
     env PATH="{erlang_home}/bin:$PATH" \\
-    "{elixir_home}"/bin/{tool} $@
+    "{elixir_home}"/bin/{tool} "$@"
 """.format(
         maybe_install_erlang = maybe_install_erlang(ctx),
         erlang_home = erlang_home,
