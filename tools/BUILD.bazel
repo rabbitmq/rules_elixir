@@ -1,0 +1,26 @@
+load(
+    ":elixir_tool.bzl",
+    "elixir_tool",
+)
+
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+elixir_tool(
+    name = "elixirc_wrapper",
+    tool = "elixirc",
+    out = "elixirc",
+)
+
+elixir_tool(
+    name = "elixir_wrapper",
+    tool = "elixir",
+    out = "elixir",
+)
+
+elixir_tool(
+    name = "iex_wrapper",
+    tool = "iex",
+    out = "iex",
+)

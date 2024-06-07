@@ -1,18 +1,9 @@
 load("@rules_erlang//:erlang_app_info.bzl", "ErlangAppInfo", "flat_deps")
 load("@rules_erlang//:util.bzl", "path_join")
 load("@rules_erlang//private:util.bzl", "erl_libs_contents")
-load(
-    ":elixir_toolchain.bzl",
-    "elixir_dirs",
-    "erlang_dirs",
-    "maybe_install_erlang",
-)
 
 def _impl(ctx):
     ebin = ctx.actions.declare_directory(ctx.attr.dest)
-
-    (erlang_home, _, erlang_runfiles) = erlang_dirs(ctx)
-    (elixir_home, elixir_runfiles) = elixir_dirs(ctx)
 
     erl_libs_dir = ctx.label.name + "_deps"
 
@@ -26,69 +17,30 @@ def _impl(ctx):
         expand_ezs = True,
     )
 
-    erl_libs_path = ""
+    env = {}
     if len(erl_libs_files) > 0:
-        erl_libs_path = path_join(
+        env["ERL_LIBS"] = path_join(
             ctx.bin_dir.path,
             ctx.label.workspace_root,
             ctx.label.package,
             erl_libs_dir,
         )
 
-    env = "\n".join([
-        "export {}={}".format(k, v)
-        for k, v in ctx.attr.env.items()
-    ])
+    env.update(ctx.attr.env)
 
-    script = """set -euo pipefail
+    args = ctx.actions.args()
+    args.add("-o")
+    args.add(ebin.path)
+    args.add_all(ctx.attr.elixirc_opts)
+    args.add_all(ctx.files.srcs)
 
-{maybe_install_erlang}
-
-if [[ "{elixir_home}" == /* ]]; then
-    ABS_ELIXIR_HOME="{elixir_home}"
-else
-    ABS_ELIXIR_HOME=$PWD/{elixir_home}
-fi
-
-if [ -n "{erl_libs_path}" ]; then
-    export ERL_LIBS={erl_libs_path}
-fi
-
-{env}
-
-{setup}
-
-export PATH="{erlang_home}/bin:$PATH"
-set -x
-"{elixir_home}"/bin/elixirc \\
-    -o {out_dir} \\
-    {elixirc_opts} \\
-    {srcs}
-""".format(
-        maybe_install_erlang = maybe_install_erlang(ctx),
-        erlang_home = erlang_home,
-        elixir_home = elixir_home,
-        erl_libs_path = erl_libs_path,
-        env = env,
-        setup = ctx.attr.setup,
-        out_dir = ebin.path,
-        elixirc_opts = " ".join(ctx.attr.elixirc_opts),
-        srcs = " ".join([f.path for f in ctx.files.srcs]),
-    )
-
-    inputs = depset(
-        direct = ctx.files.srcs + erl_libs_files,
-        transitive = [
-            erlang_runfiles.files,
-            elixir_runfiles.files
-        ],
-    )
-
-    ctx.actions.run_shell(
-        inputs = inputs,
+    ctx.actions.run(
+        inputs = ctx.files.srcs + erl_libs_files,
         outputs = [ebin],
-        command = script,
+        executable = ctx.executable._compiler,
         mnemonic = "ELIXIRC",
+        env = env,
+        arguments = [args],
     )
 
     return [
@@ -111,12 +63,14 @@ elixir_bytecode = rule(
         "ez_deps": attr.label_list(
             allow_files = [".ez"],
         ),
-        "setup": attr.string(),
         "dest": attr.string(
             mandatory = True,
         ),
+        "_compiler": attr.label(
+            default = Label("//tools:elixirc"),
+            allow_single_file = True,
+            executable = True,
+            cfg = "exec",
+        ),
     },
-    toolchains = [
-        ":toolchain_type",
-    ],
 )
