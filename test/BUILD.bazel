@@ -22,6 +22,7 @@ ex_unit_test(
     ],
     env = {
         "ERL_COMPILER_OPTIONS": "deterministic",
+        "ELIXIR_ERL_OPTIONS": "+fnu",
     },
 )
 
@@ -33,13 +34,14 @@ ex_unit_test(
     data = [
         "test/test_helper.exs",
     ],
-    env = {
-        "ERL_COMPILER_OPTIONS": "deterministic",
-    },
     elixir_opts = [
         "-r",
         "test/test_helper.exs",
     ],
+    env = {
+        "ERL_COMPILER_OPTIONS": "deterministic",
+        "ELIXIR_ERL_OPTIONS": "+fnu",
+    },
 )
 
 ex_unit_test(
@@ -49,6 +51,7 @@ ex_unit_test(
     ],
     env = {
         "ERL_COMPILER_OPTIONS": "deterministic",
+        "ELIXIR_ERL_OPTIONS": "+fnu",
     },
     tags = ["manual"],
 )
@@ -58,10 +61,14 @@ ex_unit_test(
     srcs = [
         "test/assertion_test.exs",
     ],
+    elixir_opts = [
+        "-e",
+        "ExUnit.configure(seed: 0)",
+    ],
     env = {
         "ERL_COMPILER_OPTIONS": "deterministic",
+        "ELIXIR_ERL_OPTIONS": "+fnu",
     },
-    elixir_opts = ["-e", "ExUnit.configure(seed: 0)"],
     tags = ["manual"],
 )
 
@@ -73,12 +80,13 @@ ex_unit_test(
     data = [
         "test/test_helper.exs",
     ],
-    env = {
-        "ERL_COMPILER_OPTIONS": "deterministic",
-    },
     elixir_opts = [
         "-r",
         "test/test_helper.exs",
     ],
+    env = {
+        "ERL_COMPILER_OPTIONS": "deterministic",
+        "ELIXIR_ERL_OPTIONS": "+fnu",
+    },
     tags = ["manual"],
 )
