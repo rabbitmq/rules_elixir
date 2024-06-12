@@ -13,12 +13,20 @@ load(
     "erl_libs_contents",
 )
 
-# def _package_relative_path(ctx, p):
-#     if ctx.label.package == "":
-#         return p
-#     return p.removeprefix(ctx.label.package + "/")
+def _package_relative_path(ctx, p):
+    if ctx.label.package == "":
+        return p
+    return p.removeprefix(ctx.label.package + "/")
 
 def _impl(ctx):
+    copy_srcs_commands = [
+        "mkdir -p $(dirname {dst}) && cp {src} {dst}".format(
+            src = s.path,
+            dst = path_join("${TEST_UNDECLARED_OUTPUTS_DIR}", _package_relative_path(ctx, s.path)),
+        )
+        for s in ctx.files.srcs
+    ]
+
     erl_libs_dir = ctx.label.name + "_deps"
 
     erl_libs_files = erl_libs_contents(
@@ -45,6 +53,8 @@ def _impl(ctx):
 #!/usr/bin/env bash
 set -eo pipefail
 
+{copy_srcs_commands}
+
 export ERL_LIBS=$TEST_SRCDIR/$TEST_WORKSPACE/{erl_libs_path}
 
 cd ${{TEST_UNDECLARED_OUTPUTS_DIR}}
@@ -60,16 +70,17 @@ $TEST_SRCDIR/$TEST_WORKSPACE/{elixir} \\
     {elixir_opts} \\
     {srcs}
 """.format(
-        erl_libs_path = erl_libs_path,
-        env = env,
-        setup = ctx.attr.setup,
-        elixir_opts = " ".join([shell.quote(opt) for opt in ctx.attr.elixir_opts]),
-        elixir = ctx.executable._elixir.short_path,
-        srcs = " \\\n    ".join([
-            path_join("$TEST_SRCDIR", "$TEST_WORKSPACE", s.path) 
-            for s in ctx.files.srcs
-        ])
-    )
+            copy_srcs_commands = "\n".join(copy_srcs_commands),
+            erl_libs_path = erl_libs_path,
+            env = env,
+            setup = ctx.attr.setup,
+            elixir_opts = " ".join([shell.quote(opt) for opt in ctx.attr.elixir_opts]),
+            elixir = ctx.executable._elixir.short_path,
+            srcs = " \\\n    ".join([
+                path_join("$TEST_SRCDIR", "$TEST_WORKSPACE", s.path)
+                for s in ctx.files.srcs
+            ]),
+        )
     else:
         fail("not implemented")
         output = ctx.actions.declare_file(ctx.label.name + ".bat")

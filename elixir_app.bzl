@@ -45,6 +45,7 @@ def elixir_app(
     app_file(
         name = "app_file",
         out = "%s.app" % app_name,
+        app_name = app_name,
         extra_apps = ["elixir"] + extra_apps,
         modules = [":beam_files"],
         **kwargs
@@ -70,8 +71,8 @@ def elixir_app(
         hdrs = [],
         app_name = app_name,
         beam = [":ebin"],
-        extra_apps = ["elixir"] + extra_apps,
-        license_files = glob(["LICENSE*"]),
+        extra_apps = extra_apps,
+        license_files = native.glob(["LICENSE*"]),
         priv = [],
         visibility = ["//visibility:public"],
         deps = [
