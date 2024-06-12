@@ -15,9 +15,12 @@ jobs:
         with:
           otp-version: 26
           elixir-version: 1.15
-      - name: BUILD & TEST
+      - name: CONFIGURE
         run: |
-          bazelisk test //... --color=yes
+          echo "build --color=yes" >> .bazelrc
+      - name: BUILD
+        run: |
+          bazelisk build //...
   test:
     runs-on: ubuntu-latest
     steps:
@@ -28,12 +31,16 @@ jobs:
         with:
           otp-version: 26
           elixir-version: 1.15
+      - name: CONFIGURE
+        working-directory: test
+        run: |
+          echo "build --color=yes" >> .bazelrc
       - name: BUILD & TEST
-        working-directory: rules_elixir/test
+        working-directory: test
         run: |
-          bazelisk test //... --color=yes
+          bazelisk test //...
       - name: EXPECTED FAILURES FAIL
-        working-directory: rules_elixir/test
+        working-directory: test
         run: |
-          ! bazel test //:failing_test
-          ! bazel test //:broken_test
+          ! bazelisk test //:failing_test
+          ! bazelisk test //:broken_test
