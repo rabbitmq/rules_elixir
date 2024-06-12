@@ -24,3 +24,20 @@ ex_unit_test(
         "ERL_COMPILER_OPTIONS": "deterministic",
     },
 )
+
+ex_unit_test(
+    name = "helped_test",
+    srcs = [
+        "test/helped_test.exs",
+    ],
+    data = [
+        "test/test_helper.exs",
+    ],
+    env = {
+        "ERL_COMPILER_OPTIONS": "deterministic",
+    },
+    elixir_opts = [
+        "-r",
+        "test/test_helper.exs",
+    ],
+)

@@ -44,3 +44,21 @@ jobs:
         run: |
           ! bazelisk test //:failing_test
           ! bazelisk test //:broken_test
+  examples-basic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CHECKOUT REPOSITORY
+        uses: actions/checkout@v4
+      - name: SETUP ERLANG/ELIXIR
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 26
+          elixir-version: 1.15
+      - name: CONFIGURE
+        working-directory: examples/basic
+        run: |
+          echo "build --color=yes" >> .bazelrc
+      - name: BUILD & TEST
+        working-directory: examples/basic
+        run: |
+          bazelisk test //...

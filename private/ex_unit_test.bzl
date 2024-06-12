@@ -19,12 +19,12 @@ def _package_relative_path(ctx, p):
     return p.removeprefix(ctx.label.package + "/")
 
 def _impl(ctx):
-    copy_srcs_commands = [
+    copy_srcs_and_data_commands = [
         "mkdir -p $(dirname {dst}) && cp {src} {dst}".format(
             src = s.path,
             dst = path_join("${TEST_UNDECLARED_OUTPUTS_DIR}", _package_relative_path(ctx, s.path)),
         )
-        for s in ctx.files.srcs
+        for s in ctx.files.srcs + ctx.files.data
     ]
 
     erl_libs_dir = ctx.label.name + "_deps"
@@ -53,7 +53,7 @@ def _impl(ctx):
 #!/usr/bin/env bash
 set -eo pipefail
 
-{copy_srcs_commands}
+{copy_srcs_and_data_commands}
 
 export ERL_LIBS=$TEST_SRCDIR/$TEST_WORKSPACE/{erl_libs_path}
 
@@ -72,7 +72,7 @@ $TEST_SRCDIR/$TEST_WORKSPACE/{elixir} \\
 set +x
 tail -n 4 test.log | grep --silent "0 failure" && rm test.log
 """.format(
-            copy_srcs_commands = "\n".join(copy_srcs_commands),
+            copy_srcs_and_data_commands = "\n".join(copy_srcs_and_data_commands),
             erl_libs_path = erl_libs_path,
             env = env,
             setup = ctx.attr.setup,
