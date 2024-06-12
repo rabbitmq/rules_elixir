@@ -68,7 +68,9 @@ export HOME=${{PWD}}
 set -x
 $TEST_SRCDIR/$TEST_WORKSPACE/{elixir} \\
     {elixir_opts} \\
-    {srcs}
+    {srcs} | tee test.log
+set +x
+tail -n 4 test.log | grep --silent "0 failure" && rm test.log
 """.format(
             copy_srcs_commands = "\n".join(copy_srcs_commands),
             erl_libs_path = erl_libs_path,

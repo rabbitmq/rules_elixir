@@ -73,36 +73,6 @@
   },
   "selectedYankedVersions": {},
   "moduleExtensions": {
-    "//bzlmod:extensions.bzl%elixir_config": {
-      "general": {
-        "bzlTransitiveDigest": "bPlGPeHK26/+R0kJbyn93U7fs2348xBA6T+N//6n1Yw=",
-        "usagesDigest": "U9DZmRIamurqaCu0bTID5bjexZc+4xI91Zv1aV/4DoM=",
-        "recordedFileInputs": {},
-        "recordedDirentsInputs": {},
-        "envVariables": {},
-        "generatedRepoSpecs": {
-          "elixir_config": {
-            "bzlFile": "@@//repositories:elixir_config.bzl",
-            "ruleClassName": "elixir_config",
-            "attributes": {
-              "types": {},
-              "versions": {},
-              "urls": {},
-              "strip_prefixs": {},
-              "sha256s": {},
-              "elixir_homes": {}
-            }
-          }
-        },
-        "recordedRepoMappingEntries": [
-          [
-            "",
-            "rules_erlang",
-            "rules_erlang~"
-          ]
-        ]
-      }
-    },
     "@@apple_support~//crosstool:setup.bzl%apple_cc_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "PjIds3feoYE8SGbbIq2SFTZy3zmxeO2tQevJZNDo7iY=",
@@ -196,6 +166,36 @@
           }
         },
         "recordedRepoMappingEntries": []
+      }
+    },
+    "@@rules_elixir~//bzlmod:extensions.bzl%elixir_config": {
+      "general": {
+        "bzlTransitiveDigest": "bPlGPeHK26/+R0kJbyn93U7fs2348xBA6T+N//6n1Yw=",
+        "usagesDigest": "kp8/iOWoD/eSCkneQ1qVmUrdmavBigjxvFHiN4zXYZI=",
+        "recordedFileInputs": {},
+        "recordedDirentsInputs": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "elixir_config": {
+            "bzlFile": "@@rules_elixir~//repositories:elixir_config.bzl",
+            "ruleClassName": "elixir_config",
+            "attributes": {
+              "types": {},
+              "versions": {},
+              "urls": {},
+              "strip_prefixs": {},
+              "sha256s": {},
+              "elixir_homes": {}
+            }
+          }
+        },
+        "recordedRepoMappingEntries": [
+          [
+            "rules_elixir~",
+            "rules_erlang",
+            "rules_erlang~"
+          ]
+        ]
       }
     },
     "@@rules_erlang~//bzlmod:extensions.bzl%erlang_config": {

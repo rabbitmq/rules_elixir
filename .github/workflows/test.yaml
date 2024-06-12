@@ -1,0 +1,39 @@
+name: Test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CHECKOUT REPOSITORY
+        uses: actions/checkout@v4
+      - name: SETUP ERLANG/ELIXIR
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 26
+          elixir-version: 1.15
+      - name: BUILD & TEST
+        run: |
+          bazelisk test //... --color=yes
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CHECKOUT REPOSITORY
+        uses: actions/checkout@v4
+      - name: SETUP ERLANG/ELIXIR
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 26
+          elixir-version: 1.15
+      - name: BUILD & TEST
+        working-directory: rules_elixir/test
+        run: |
+          bazelisk test //... --color=yes
+      - name: EXPECTED FAILURES FAIL
+        working-directory: rules_elixir/test
+        run: |
+          ! bazel test //:failing_test
+          ! bazel test //:broken_test
