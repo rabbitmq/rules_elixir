@@ -20,7 +20,8 @@ jobs:
           echo "build --color=yes" >> .bazelrc
       - name: BUILD
         run: |
-          bazelisk build //...
+          bazelisk build //... \
+            --verbose_failures
   test:
     runs-on: ubuntu-latest
     steps:
@@ -45,6 +46,13 @@ jobs:
           ! bazelisk test //:failing_test
           ! bazelisk test //:broken_test
           ! bazelisk test //:empty_test
+      - name: UPLOAD TEST LOGS
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bazel-testlogs
+          path: |
+            test/bazel-testlogs/*
   examples-basic:
     runs-on: ubuntu-latest
     steps:
@@ -63,3 +71,10 @@ jobs:
         working-directory: examples/basic
         run: |
           bazelisk test //...
+      - name: UPLOAD TEST LOGS
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bazel-testlogs-examples-basic
+          path: |
+            examples/basic/bazel-testlogs/*
