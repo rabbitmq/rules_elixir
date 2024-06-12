@@ -64,3 +64,21 @@ ex_unit_test(
     elixir_opts = ["-e", "ExUnit.configure(seed: 0)"],
     tags = ["manual"],
 )
+
+ex_unit_test(
+    name = "empty_test",
+    srcs = [
+        "test/empty_test.exs",
+    ],
+    data = [
+        "test/test_helper.exs",
+    ],
+    env = {
+        "ERL_COMPILER_OPTIONS": "deterministic",
+    },
+    elixir_opts = [
+        "-r",
+        "test/test_helper.exs",
+    ],
+    tags = ["manual"],
+)

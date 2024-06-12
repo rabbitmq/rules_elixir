@@ -44,6 +44,7 @@ jobs:
         run: |
           ! bazelisk test //:failing_test
           ! bazelisk test //:broken_test
+          ! bazelisk test //:empty_test
   examples-basic:
     runs-on: ubuntu-latest
     steps:
