@@ -69,7 +69,7 @@ set -x
 $TEST_SRCDIR/$TEST_WORKSPACE/{elixir} \\
     {elixir_opts} \\
     {srcs} | tee test.log
-set +x
+# set +x
 tail -n 4 test.log | grep --silent "0 failure"
 tail -n 4 test.log | grep --silent "\\d test"
 rm test.log
