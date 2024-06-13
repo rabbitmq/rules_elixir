@@ -22,6 +22,7 @@ ex_unit_test(
     ],
     env = {
         "ERL_COMPILER_OPTIONS": "deterministic",
+        "ELIXIR_ERL_OPTIONS": "+fnu",
     },
 )
 
@@ -33,11 +34,12 @@ ex_unit_test(
     data = [
         "test/test_helper.exs",
     ],
-    env = {
-        "ERL_COMPILER_OPTIONS": "deterministic",
-    },
     elixir_opts = [
         "-r",
         "test/test_helper.exs",
     ],
+    env = {
+        "ERL_COMPILER_OPTIONS": "deterministic",
+        "ELIXIR_ERL_OPTIONS": "+fnu",
+    },
 )
