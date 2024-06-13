@@ -1,5 +1,10 @@
 load("@rules_elixir//:elixir_app.bzl", "elixir_app")
 load("@rules_elixir//:ex_unit_test.bzl", "ex_unit_test")
+load(
+    "@rules_elixir//tools:elixir_vars.bzl",
+    "ELIXIR_VARS_ENV_MAP",
+    "ELIXIR_VARS_ENV_MAP_INTERNAL",
+)
 load("@rules_erlang//:escript.bzl", "escript_archive")
 
 elixir_app(
@@ -29,20 +34,42 @@ ex_unit_test(
 ex_unit_test(
     name = "helped_test",
     srcs = [
+        "test/test_helper.exs",
         "test/helped_test.exs",
-    ],
-    data = [
-        "test/test_helper.exs",
-    ],
-    elixir_opts = [
-        "-r",
-        "test/test_helper.exs",
     ],
     env = {
         "ERL_COMPILER_OPTIONS": "deterministic",
         "ELIXIR_ERL_OPTIONS": "+fnu",
     },
 )
+
+ex_unit_test(
+    name = "two_file_test",
+    srcs = [
+        "test/test_helper.exs",
+        "test/assertion_test.exs",
+        "test/helped_test.exs",
+    ],
+    env = {
+        "ERL_COMPILER_OPTIONS": "deterministic",
+        "ELIXIR_ERL_OPTIONS": "+fnu",
+    },
+)
+
+sh_test(
+    name = "escript_test",
+    size = "small",
+    srcs = ["escript_test.sh"],
+    data = [":basic"],
+    env = select({
+        "@erlang_config//:erlang_internal": ELIXIR_VARS_ENV_MAP_INTERNAL,
+        "//conditions:default": ELIXIR_VARS_ENV_MAP,
+    }),
+    toolchains = ["@rules_elixir//tools:elixir_vars"],
+)
+
+# Below tests are intentially failing, and checked by
+# .github/workflows/test.yaml
 
 ex_unit_test(
     name = "failing_test",
@@ -75,14 +102,8 @@ ex_unit_test(
 ex_unit_test(
     name = "empty_test",
     srcs = [
+        "test/test_helper.exs",
         "test/empty_test.exs",
-    ],
-    data = [
-        "test/test_helper.exs",
-    ],
-    elixir_opts = [
-        "-r",
-        "test/test_helper.exs",
     ],
     env = {
         "ERL_COMPILER_OPTIONS": "deterministic",

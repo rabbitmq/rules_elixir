@@ -40,6 +40,10 @@ jobs:
         working-directory: test
         run: |
           bazelisk test //...
+      - name: CHECK LOGS
+        working-directory: test
+        run: |
+          grep "2 tests, 0 failures" bazel-testlogs/two_file_test/test.log
       - name: EXPECTED FAILURES FAIL
         working-directory: test
         run: |
