@@ -20,7 +20,7 @@ def _package_relative_path(ctx, p):
 
 def _impl(ctx):
     copy_srcs_and_data_commands = [
-        "mkdir -p $(dirname {dst}) && cp {src} {dst}".format(
+        'mkdir -p $(dirname "{dst}") && cp "{src}" "{dst}"'.format(
             src = s.path,
             dst = path_join("${TEST_UNDECLARED_OUTPUTS_DIR}", _package_relative_path(ctx, s.path)),
         )
@@ -55,9 +55,9 @@ set -eo pipefail
 
 {copy_srcs_and_data_commands}
 
-export ERL_LIBS=$TEST_SRCDIR/$TEST_WORKSPACE/{erl_libs_path}
+export ERL_LIBS="$TEST_SRCDIR/$TEST_WORKSPACE/{erl_libs_path}"
 
-cd ${{TEST_UNDECLARED_OUTPUTS_DIR}}
+cd "${{TEST_UNDECLARED_OUTPUTS_DIR}}"
 
 export HOME=${{PWD}}
 
@@ -68,7 +68,8 @@ export HOME=${{PWD}}
 set -x
 $TEST_SRCDIR/$TEST_WORKSPACE/{elixir} \\
     {elixir_opts} \\
-    {srcs} | tee test.log
+    {srcs_args} \\
+    | tee test.log
 set +x
 tail -n 4 test.log | grep -E --silent "0 failure"
 tail -n 4 test.log | grep -E --silent "[0-9] test"
@@ -80,8 +81,8 @@ rm test.log
             setup = ctx.attr.setup,
             elixir_opts = " ".join([shell.quote(opt) for opt in ctx.attr.elixir_opts]),
             elixir = ctx.executable._elixir.short_path,
-            srcs = " \\\n    ".join([
-                path_join("$TEST_SRCDIR", "$TEST_WORKSPACE", s.path)
+            srcs_args = " \\\n    ".join([
+                "-r {}".format(_package_relative_path(ctx, s.path))
                 for s in ctx.files.srcs
             ]),
         )

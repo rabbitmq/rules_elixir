@@ -2,6 +2,10 @@ load(
     ":elixir_tool.bzl",
     "elixir_tool",
 )
+load(
+    ":elixir_vars.bzl",
+    "elixir_vars",
+)
 
 package(
     default_visibility = ["//visibility:public"],
@@ -23,4 +27,8 @@ elixir_tool(
     name = "iex_wrapper",
     out = "iex",
     tool = "iex",
+)
+
+elixir_vars(
+    name = "elixir_vars",
 )

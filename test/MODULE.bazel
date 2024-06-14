@@ -15,3 +15,12 @@ local_path_override(
     module_name = "rules_elixir",
     path = "..",
 )
+
+erlang_config = use_extension(
+    "@rules_erlang//bzlmod:extensions.bzl",
+    "erlang_config",
+)
+use_repo(
+    erlang_config,
+    "erlang_config",
+)

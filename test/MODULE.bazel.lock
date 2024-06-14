@@ -201,7 +201,7 @@
     "@@rules_erlang~//bzlmod:extensions.bzl%erlang_config": {
       "general": {
         "bzlTransitiveDigest": "cKDB+SYgzLJKzBBfy42/kejTy+1rUzE3TYs1J4nJtWA=",
-        "usagesDigest": "abVIZcMsSBpDPBMfeEVv8jsSzdlF9LoTBTjP5QVwuBY=",
+        "usagesDigest": "5s7MypV1ED/guEk2CKpLkAnp1dtTDid2oje1i1GOLU4=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
