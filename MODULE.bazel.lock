@@ -76,7 +76,7 @@
     "//bzlmod:extensions.bzl%elixir_config": {
       "general": {
         "bzlTransitiveDigest": "bPlGPeHK26/+R0kJbyn93U7fs2348xBA6T+N//6n1Yw=",
-        "usagesDigest": "U9DZmRIamurqaCu0bTID5bjexZc+4xI91Zv1aV/4DoM=",
+        "usagesDigest": "YpOlYB/yIHoUkO6xYHsWGiR0HGmlETgSi8lMqz6EDro=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
