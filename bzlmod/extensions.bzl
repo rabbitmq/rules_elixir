@@ -1,14 +1,12 @@
 load(
-    "//:elixir.bzl",
-    "DEFAULT_ELIXIR_SHA256",
-    "DEFAULT_ELIXIR_VERSION",
-)
-load(
     "//repositories:elixir_config.bzl",
     "INSTALLATION_TYPE_EXTERNAL",
     "INSTALLATION_TYPE_INTERNAL",
     _elixir_config_rule = "elixir_config",
 )
+
+DEFAULT_ELIXIR_VERSION = "1.15.0"
+DEFAULT_ELIXIR_SHA256 = "0f4df7574a5f300b5c66f54906222cd46dac0df7233ded165bc8e80fd9ffeb7a"
 
 def _elixir_config(ctx):
     types = {}
