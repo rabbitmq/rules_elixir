@@ -1,4 +1,4 @@
-ExUnit.start()
+ExUnit.start(trace: true)
 
 defmodule AssertionTest do
   use ExUnit.Case, async: true
