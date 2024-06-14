@@ -2,8 +2,7 @@ name: Release
 on:
   push:
     tags:
-    - 0.1.*
-    - 1.0.X
+    - v1.*
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -20,7 +19,7 @@ jobs:
 
         VERSION_BAZEL="$(cat MODULE.bazel | buildozer 'print version' -:%module)"
 
-        if [[ "${{ github.ref_name }}" != "$VERSION_BAZEL" ]]; then
+        if [[ "${{ github.ref_name }}" != "v$VERSION_BAZEL" ]]; then
           echo "Version in MODULE.bazel ($VERSION_BAZEL) does not match tag (${{ github.ref_name }})"
           exit 1
         fi
