@@ -75,3 +75,17 @@ jobs:
         working-directory: examples/basic
         run: |
           bazelisk test //...
+  examples-internal-elixir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CHECKOUT REPOSITORY
+        uses: actions/checkout@v4
+      - name: CONFIGURE
+        working-directory: examples/internal-elixir
+        run: |
+          echo "build --color=yes" >> .bazelrc
+      - name: BUILD & TEST
+        working-directory: examples/internal-elixir
+        run: |
+          bazelisk test //... \
+            --config=ie-26_2
