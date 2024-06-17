@@ -88,4 +88,6 @@ jobs:
         working-directory: examples/internal-elixir
         run: |
           bazelisk test //... \
-            --config=ie-26_2
+            --config=ie-26_2 \
+            --toolchain_resolution_debug='@@rules_erlang~//tools:toolchain_type' \
+            --toolchain_resolution_debug='@@rules_elixir~//:toolchain_type'
