@@ -80,7 +80,7 @@ rm test.log
             env = env,
             setup = ctx.attr.setup,
             elixir_opts = " ".join([shell.quote(opt) for opt in ctx.attr.elixir_opts]),
-            elixir = ctx.executable._elixir.short_path,
+            elixir = ctx.executable.elixir.short_path,
             srcs_args = " \\\n    ".join([
                 "-r {}".format(_package_relative_path(ctx, s.path))
                 for s in ctx.files.srcs
@@ -97,10 +97,10 @@ rm test.log
         content = script,
     )
 
-    runfiles = ctx.attr._elixir[DefaultInfo].default_runfiles
+    runfiles = ctx.attr.elixir[DefaultInfo].default_runfiles
     runfiles = runfiles.merge_all(
         [
-            ctx.runfiles([ctx.executable._elixir]),
+            ctx.runfiles([ctx.executable.elixir]),
             ctx.runfiles(ctx.files.srcs + ctx.files.data + erl_libs_files),
         ] + [
             tool[DefaultInfo].default_runfiles
@@ -129,9 +129,8 @@ ex_unit_test = rule(
         "env": attr.string_dict(),
         "setup": attr.string(),
         "elixir_opts": attr.string_list(),
-        "_elixir": attr.label(
-            default = Label("//tools:elixir"),
-            allow_single_file = True,
+        "elixir": attr.label(
+            mandatory = True,
             executable = True,
             cfg = "target",
         ),
