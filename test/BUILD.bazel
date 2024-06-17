@@ -9,6 +9,9 @@ load("@rules_erlang//:escript.bzl", "escript_archive")
 
 elixir_app(
     app_name = "basic",
+    elixirc_opts = [
+        "--warnings-as-errors",
+    ],
 )
 
 escript_archive(
