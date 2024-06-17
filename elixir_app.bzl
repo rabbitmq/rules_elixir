@@ -40,6 +40,7 @@ def elixir_app(
         elixirc_opts = elixirc_opts,
         ez_deps = ez_deps,
         deps = deps,
+        elixirc = Label("@rules_elixir//tools:elixirc_wrapper"),
     )
 
     app_file(

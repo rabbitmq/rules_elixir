@@ -34,10 +34,16 @@ def _impl(ctx):
     args.add_all(ctx.attr.elixirc_opts)
     args.add_all(ctx.files.srcs)
 
+    compiler_runfiles = ctx.attr.elixirc[DefaultInfo].default_runfiles
+
+    inputs = (compiler_runfiles.files.to_list() +
+              erl_libs_files +
+              ctx.files.srcs)
+
     ctx.actions.run(
-        inputs = ctx.files.srcs + erl_libs_files,
+        inputs = inputs,
         outputs = [ebin],
-        executable = ctx.executable._compiler,
+        executable = ctx.executable.elixirc,
         mnemonic = "ELIXIRC",
         env = env,
         arguments = [args],
@@ -66,11 +72,10 @@ elixir_bytecode = rule(
         "dest": attr.string(
             mandatory = True,
         ),
-        "_compiler": attr.label(
-            default = Label("//tools:elixirc"),
-            allow_single_file = True,
+        "elixirc": attr.label(
+            mandatory = True,
             executable = True,
-            cfg = "exec",
+            cfg = "target",
         ),
     },
 )

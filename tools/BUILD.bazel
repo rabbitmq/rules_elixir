@@ -13,19 +13,19 @@ package(
 
 elixir_tool(
     name = "elixirc_wrapper",
-    out = "elixirc",
+    out = "elixirc.bash",
     tool = "elixirc",
 )
 
 elixir_tool(
     name = "elixir_wrapper",
-    out = "elixir",
+    out = "elixir.bash",
     tool = "elixir",
 )
 
 elixir_tool(
     name = "iex_wrapper",
-    out = "iex",
+    out = "iex.bash",
     tool = "iex",
 )
 
