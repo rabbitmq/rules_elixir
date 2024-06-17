@@ -37,7 +37,7 @@ elixir_config = use_extension(
 )
 elixir_config.internal_elixir_from_github_release(
     name = "1_16",
-    # sha256 = "09e697ab13fc60f27adaba9b71f8793105acd4320a89b16be0ceb4a13426d779",
+    sha256 = "b9e845458e03d62a24325b8424069e401cc7468e21143ecbca5514724d7cbaa0",
     version = "1.16.1",
 )
 use_repo(

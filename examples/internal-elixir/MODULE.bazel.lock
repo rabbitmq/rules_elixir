@@ -174,7 +174,7 @@
     "@@rules_elixir~//bzlmod:extensions.bzl%elixir_config": {
       "general": {
         "bzlTransitiveDigest": "ohoT9jmBnvAHOfB4OsOb7JBw77WEicWKthjpKqEIdR4=",
-        "usagesDigest": "/pfuVtdXdVvMqZXd+gaMfKYY4WYqaOAFPjnP342dBqE=",
+        "usagesDigest": "le660DoZ4a3PQVMFM57w/KjSRHz8B/txgzlbYaWDYaA=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -196,7 +196,7 @@
                 "1_16": "elixir-1.16.1"
               },
               "sha256s": {
-                "1_16": "0f4df7574a5f300b5c66f54906222cd46dac0df7233ded165bc8e80fd9ffeb7a"
+                "1_16": "b9e845458e03d62a24325b8424069e401cc7468e21143ecbca5514724d7cbaa0"
               },
               "elixir_homes": {}
             }
