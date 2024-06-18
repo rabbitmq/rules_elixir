@@ -4,4 +4,7 @@ load(
 )
 
 def iex_eval(**kwargs):
-    return _iex_eval(**kwargs)
+    return _iex_eval(
+        iex = Label("//tools:iex_wrapper"),
+        **kwargs
+    )

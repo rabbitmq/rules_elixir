@@ -75,7 +75,7 @@ elixir_bytecode = rule(
         "elixirc": attr.label(
             mandatory = True,
             executable = True,
-            cfg = "exec",
+            cfg = "target",
         ),
     },
 )

@@ -31,11 +31,10 @@ iex_eval = rule(
         "expression": attr.string(
             mandatory = True,
         ),
-        "_iex": attr.label(
-            default = Label("//tools:iex"),
-            allow_single_file = True,
+        "iex": attr.label(
+            mandatory = True,
             executable = True,
-            cfg = "exec",
+            cfg = "target",
         ),
     },
 )
