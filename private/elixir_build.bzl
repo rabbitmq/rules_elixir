@@ -113,6 +113,7 @@ cp -r lib $ABS_RELEASE_DIR/
             build_log = build_log.path,
             release_path = release_dir.path,
         ),
+        use_default_shell_env = True,
         mnemonic = "ELIXIR",
         progress_message = "Compiling elixir from source",
     )
