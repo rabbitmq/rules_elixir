@@ -99,4 +99,5 @@ jobs:
           bazelisk test //... \
             --config=ie-26_2 \
             --toolchain_resolution_debug='@@rules_erlang~//tools:toolchain_type' \
-            --toolchain_resolution_debug='@@rules_elixir~//:toolchain_type'
+            --toolchain_resolution_debug='@@rules_elixir~//:toolchain_type' \
+            --verbose_failures
