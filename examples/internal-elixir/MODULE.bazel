@@ -7,6 +7,15 @@ bazel_dep(
     name = "rules_erlang",
     version = "3.15.3",
 )
+archive_override(
+    module_name = "rules_erlang",
+    patch_strip = 1,
+    patches = ["@//:use_default_shell_env.patch"],
+    strip_prefix = "rules_erlang-symlinks-again",
+    urls = [
+        "https://github.com/rabbitmq/rules_erlang/archive/refs/heads/symlinks-again.zip",
+    ],
+)
 bazel_dep(
     name = "rules_elixir",
     version = "0.1.0",
