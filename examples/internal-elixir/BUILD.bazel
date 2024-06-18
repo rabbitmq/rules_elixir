@@ -53,7 +53,7 @@ platform(
         "@erlang_config//:erlang_26",
         "@elixir_config//:elixir_1_16",
     ],
-    parents = [":erlang_internal_platform"],
+    parents = ["@local_config_platform//:host"],
 )
 
 platform(
@@ -62,5 +62,5 @@ platform(
         "@erlang_config//:erlang_26_2",
         "@elixir_config//:elixir_1_16",
     ],
-    parents = [":erlang_internal_platform"],
+    parents = ["@local_config_platform//:host"],
 )
