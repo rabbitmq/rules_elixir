@@ -9,11 +9,9 @@ bazel_dep(
 )
 archive_override(
     module_name = "rules_erlang",
-    patch_strip = 1,
-    patches = ["@//:use_default_shell_env.patch"],
-    strip_prefix = "rules_erlang-symlinks-again",
+    strip_prefix = "rules_erlang-3.16.x",
     urls = [
-        "https://github.com/rabbitmq/rules_erlang/archive/refs/heads/symlinks-again.zip",
+        "https://github.com/rabbitmq/rules_erlang/archive/refs/heads/3.16.x.zip",
     ],
 )
 bazel_dep(
