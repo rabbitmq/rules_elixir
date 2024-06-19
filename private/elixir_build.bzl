@@ -77,6 +77,7 @@ export PATH="{erlang_home}"/bin:${{PATH}}
 
 ABS_BUILD_DIR=$PWD/{build_path}
 ABS_RELEASE_DIR=$PWD/{release_path}
+ABS_LOG=$PWD/{build_log}
 
 tar --extract \\
     --transform 's/{strip_prefix}//' \\
@@ -98,7 +99,10 @@ catch() {{
 
 cd $ABS_BUILD_DIR
 
-make
+export HOME=$PWD
+
+make >> "$ABS_LOG" 2>&1
+echo "    make finished"
 
 cp -r bin $ABS_RELEASE_DIR/
 cp -r lib $ABS_RELEASE_DIR/
