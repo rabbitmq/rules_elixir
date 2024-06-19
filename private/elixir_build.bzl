@@ -27,8 +27,6 @@ def _impl(ctx):
     downloaded_archive = ctx.actions.declare_file(filename)
 
     release_dir = ctx.actions.declare_directory(ctx.label.name + "_release")
-    build_dir = ctx.actions.declare_directory(ctx.label.name + "_build")
-    build_log = ctx.actions.declare_file(ctx.label.name + "_build.log")
 
     version_file = ctx.actions.declare_file(ctx.label.name + "_version")
 
@@ -61,7 +59,7 @@ curl -L "{archive_url}" -o {archive_path}
 
     ctx.actions.run_shell(
         inputs = inputs,
-        outputs = [release_dir, build_dir, build_log],
+        outputs = [release_dir],
         command = """set -euo pipefail
 
 if [ -n "{sha256}" ]; then
@@ -75,9 +73,8 @@ fi
 
 export PATH="{erlang_home}"/bin:${{PATH}}
 
-ABS_BUILD_DIR=$PWD/{build_path}
+ABS_BUILD_DIR="$(mktemp -d)"
 ABS_RELEASE_DIR=$PWD/{release_path}
-ABS_LOG=$PWD/{build_log}
 
 tar --extract \\
     --transform 's/{strip_prefix}//' \\
@@ -86,23 +83,11 @@ tar --extract \\
 
 echo "Building ELIXIR in $ABS_BUILD_DIR"
 
-trap 'catch $?' EXIT
-catch() {{
-    [[ $1 == 0 ]] || tail -n 50 "$ABS_LOG"
-    echo "    archiving build dir to: {build_path}"
-    cd "$ABS_BUILD_DIR"
-    tar --create \\
-        --file "$ABS_BUILD_DIR_TAR" \\
-        *
-    echo "    build log: {build_log}"
-}}
-
 cd $ABS_BUILD_DIR
 
 export HOME=$PWD
 
-make >> "$ABS_LOG" 2>&1
-echo "    make finished"
+make
 
 cp -r bin $ABS_RELEASE_DIR/
 cp -r lib $ABS_RELEASE_DIR/
@@ -113,8 +98,6 @@ cp -r lib $ABS_RELEASE_DIR/
             erlang_home = erlang_home,
             archive_path = downloaded_archive.path,
             strip_prefix = strip_prefix,
-            build_path = build_dir.path,
-            build_log = build_log.path,
             release_path = release_dir.path,
         ),
         use_default_shell_env = True,
