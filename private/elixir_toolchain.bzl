@@ -60,7 +60,7 @@ mkdir -p $(dirname "{install_path}")
 if mkdir "{install_path}"; then
     tar --extract \\
         --directory "{install_path}" \\
-        --file {release_tar}
+        --file ${{RUNFILES_DIR}}/{release_tar}
 fi\
 """.format(
             release_tar = release_dir_tar.short_path if short_path else release_dir_tar.path,

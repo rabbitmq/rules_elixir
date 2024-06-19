@@ -207,7 +207,7 @@
     "@@rules_erlang~//bzlmod:extensions.bzl%erlang_config": {
       "general": {
         "bzlTransitiveDigest": "7tHl9Cz2V4l3W3ob5Pph0erZioQ6ibHzs0AhqNwcbbU=",
-        "usagesDigest": "OV9GACM/yT9wVFJpxJ44ztAHaoJvjMWJL5D7YSrlTTI=",
+        "usagesDigest": "XoALG0O9iYTkJ9NCHKX/+yXEGikZryNfKdh3rcvE0Yc=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -234,9 +234,7 @@
               },
               "erlang_homes": {},
               "pre_configure_cmdss": {
-                "26_2": [
-                  "printenv"
-                ]
+                "26_2": []
               },
               "extra_configure_optss": {
                 "26_2": []

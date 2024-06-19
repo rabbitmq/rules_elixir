@@ -100,7 +100,6 @@ rm test.log
     runfiles = ctx.attr.elixir[DefaultInfo].default_runfiles
     runfiles = runfiles.merge_all(
         [
-            ctx.runfiles([ctx.executable.elixir]),
             ctx.runfiles(ctx.files.srcs + ctx.files.data + erl_libs_files),
         ] + [
             tool[DefaultInfo].default_runfiles
