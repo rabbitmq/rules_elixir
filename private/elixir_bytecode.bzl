@@ -38,12 +38,18 @@ def _impl(ctx):
         for k, v in ctx.attr.env.items()
     ])
 
-    (_, _, erlang_runfiles) = erlang_dirs(ctx)
+    (erlang_home, _, erlang_runfiles) = erlang_dirs(ctx)
     (elixir_home, elixir_runfiles) = elixir_dirs(ctx)
 
     script = """set -euo pipefail
 
 {maybe_install_erlang}
+if [[ "{elixir_home}" == /* ]]; then
+    ABS_ELIXIR_HOME="{elixir_home}"
+else
+    ABS_ELIXIR_HOME=$PWD/{elixir_home}
+fi
+export PATH="$ABS_ELIXIR_HOME"/bin:"{erlang_home}"/bin:${{PATH}}
 
 if [ -n "{erl_libs_path}" ]; then
     export ERL_LIBS={erl_libs_path}
@@ -53,12 +59,13 @@ fi
 
 {setup}
 set -x
-"{elixir_home}"/bin/elixirc \\
+${{ABS_ELIXIR_HOME}}/bin/elixirc \\
     -o {out_dir} \\
     {elixirc_opts} \\
     {srcs}
 """.format(
         maybe_install_erlang = maybe_install_erlang(ctx),
+        erlang_home = erlang_home,
         elixir_home = elixir_home,
         erl_libs_path = erl_libs_path,
         env = env,

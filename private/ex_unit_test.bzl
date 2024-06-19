@@ -49,7 +49,7 @@ def _impl(ctx):
 
     erl_libs_path = path_join(package, erl_libs_dir)
 
-    (_, _, erlang_runfiles) = erlang_dirs(ctx)
+    (erlang_home, _, erlang_runfiles) = erlang_dirs(ctx)
     (elixir_home, elixir_runfiles) = elixir_dirs(ctx, short_path = True)
 
     if not ctx.attr.is_windows:
@@ -63,6 +63,12 @@ def _impl(ctx):
 set -eo pipefail
 
 {maybe_install_erlang}
+if [[ "{elixir_home}" == /* ]]; then
+    ABS_ELIXIR_HOME="{elixir_home}"
+else
+    ABS_ELIXIR_HOME=$PWD/{elixir_home}
+fi
+export PATH="$ABS_ELIXIR_HOME"/bin:"{erlang_home}"/bin:${{PATH}}
 
 {copy_srcs_and_data_commands}
 
@@ -75,9 +81,8 @@ export HOME=${{PWD}}
 {env}
 
 {setup}
-
 set -x
-"{elixir_home}"/bin/elixir \\
+${{ABS_ELIXIR_HOME}}/bin/elixir \\
     {elixir_opts} \\
     {srcs_args} \\
     | tee test.log
@@ -87,6 +92,7 @@ tail -n 4 test.log | grep -E --silent "[0-9] test"
 rm test.log
 """.format(
             maybe_install_erlang = maybe_install_erlang(ctx),
+            erlang_home = erlang_home,
             elixir_home = elixir_home,
             copy_srcs_and_data_commands = "\n".join(copy_srcs_and_data_commands),
             erl_libs_path = erl_libs_path,
