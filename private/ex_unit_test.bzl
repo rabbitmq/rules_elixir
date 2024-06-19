@@ -91,7 +91,7 @@ tail -n 4 test.log | grep -E --silent "0 failure"
 tail -n 4 test.log | grep -E --silent "[0-9] test"
 rm test.log
 """.format(
-            maybe_install_erlang = maybe_install_erlang(ctx),
+            maybe_install_erlang = maybe_install_erlang(ctx, short_path = True),
             erlang_home = erlang_home,
             elixir_home = elixir_home,
             copy_srcs_and_data_commands = "\n".join(copy_srcs_and_data_commands),
