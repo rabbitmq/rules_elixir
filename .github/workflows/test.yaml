@@ -75,6 +75,13 @@ jobs:
         working-directory: examples/basic
         run: |
           bazelisk test //...
+      - name: UPLOAD TEST LOGS
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bazel-testlogs-examples-basic
+          path: |
+            examples/basic/bazel-testlogs/*
   examples-internal-elixir:
     runs-on: ubuntu-latest
     steps:
@@ -113,3 +120,10 @@ jobs:
             --toolchain_resolution_debug='@@rules_erlang~//tools:toolchain_type' \
             --toolchain_resolution_debug='@@rules_elixir~//:toolchain_type' \
             --verbose_failures
+      - name: UPLOAD TEST LOGS
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bazel-testlogs-examples-internal-elixir
+          path: |
+            examples/internal-elixir/bazel-testlogs/*
