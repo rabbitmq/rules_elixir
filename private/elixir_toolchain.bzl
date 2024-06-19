@@ -61,7 +61,7 @@ if mkdir "{install_path}"; then
     if [[ -z ${{RUNFILES_DIR+x}} ]]; then
         RELEASE_TAR={release_tar}
     else
-        RELEASE_TAR=${{RUNFILES_DIR}}/{release_tar_short}
+        RELEASE_TAR=${{RUNFILES_DIR}}/${{TEST_WORKSPACE}}/{release_tar_short}
     fi
     tar --extract \\
         --directory "{install_path}" \\
