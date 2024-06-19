@@ -12,6 +12,12 @@ load(
     "@rules_erlang//private:util.bzl",
     "erl_libs_contents",
 )
+load(
+    "//private:elixir_toolchain.bzl",
+    "elixir_dirs",
+    "erlang_dirs",
+    "maybe_install_erlang",
+)
 
 def _package_relative_path(ctx, p):
     if ctx.label.package == "":
@@ -43,6 +49,9 @@ def _impl(ctx):
 
     erl_libs_path = path_join(package, erl_libs_dir)
 
+    (_, _, erlang_runfiles) = erlang_dirs(ctx)
+    (elixir_home, elixir_runfiles) = elixir_dirs(ctx, short_path = True)
+
     if not ctx.attr.is_windows:
         env = "\n".join([
             "export {}={}".format(k, v)
@@ -52,6 +61,8 @@ def _impl(ctx):
         script = """\
 #!/usr/bin/env bash
 set -eo pipefail
+
+{maybe_install_erlang}
 
 {copy_srcs_and_data_commands}
 
@@ -66,7 +77,7 @@ export HOME=${{PWD}}
 {setup}
 
 set -x
-$TEST_SRCDIR/$TEST_WORKSPACE/{elixir} \\
+"{elixir_home}"/bin/elixir \\
     {elixir_opts} \\
     {srcs_args} \\
     | tee test.log
@@ -75,12 +86,13 @@ tail -n 4 test.log | grep -E --silent "0 failure"
 tail -n 4 test.log | grep -E --silent "[0-9] test"
 rm test.log
 """.format(
+            maybe_install_erlang = maybe_install_erlang(ctx),
+            elixir_home = elixir_home,
             copy_srcs_and_data_commands = "\n".join(copy_srcs_and_data_commands),
             erl_libs_path = erl_libs_path,
             env = env,
             setup = ctx.attr.setup,
             elixir_opts = " ".join([shell.quote(opt) for opt in ctx.attr.elixir_opts]),
-            elixir = ctx.executable.elixir.short_path,
             srcs_args = " \\\n    ".join([
                 "-r {}".format(_package_relative_path(ctx, s.path))
                 for s in ctx.files.srcs
@@ -97,7 +109,7 @@ rm test.log
         content = script,
     )
 
-    runfiles = ctx.attr.elixir[DefaultInfo].default_runfiles
+    runfiles = erlang_runfiles.merge(elixir_runfiles)
     runfiles = runfiles.merge_all(
         [
             ctx.runfiles(ctx.files.srcs + ctx.files.data + erl_libs_files),
@@ -128,11 +140,7 @@ ex_unit_test = rule(
         "env": attr.string_dict(),
         "setup": attr.string(),
         "elixir_opts": attr.string_list(),
-        "elixir": attr.label(
-            mandatory = True,
-            executable = True,
-            cfg = "target",
-        ),
     },
+    toolchains = ["//:toolchain_type"],
     test = True,
 )

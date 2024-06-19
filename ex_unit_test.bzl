@@ -9,6 +9,5 @@ def ex_unit_test(**kwargs):
             "@bazel_tools//src/conditions:host_windows": True,
             "//conditions:default": False,
         }),
-        elixir = Label("@rules_elixir//tools:elixir_wrapper"),
         **kwargs
     )

@@ -49,7 +49,7 @@ def elixir_dirs(ctx, short_path = False):
         p = info.release_dir.short_path if short_path else info.release_dir.path
         return (p, ctx.runfiles([info.release_dir, info.version_file]))
 
-def maybe_install_erlang(ctx):
+def maybe_install_erlang(ctx, short_path = False):
     info = _build_info(ctx)
     release_dir_tar = info.release_dir_tar
     if release_dir_tar == None:
@@ -58,17 +58,11 @@ def maybe_install_erlang(ctx):
         return """\
 mkdir -p $(dirname "{install_path}")
 if mkdir "{install_path}"; then
-    if [[ -z ${{RUNFILES_DIR+x}} ]]; then
-        RELEASE_TAR={release_tar}
-    else
-        RELEASE_TAR=${{RUNFILES_DIR}}/${{TEST_WORKSPACE}}/{release_tar_short}
-    fi
     tar --extract \\
         --directory "{install_path}" \\
-        --file $RELEASE_TAR
+        --file {release_tar}
 fi\
 """.format(
-            release_tar = release_dir_tar.path,
-            release_tar_short = release_dir_tar.short_path,
+            release_tar = release_dir_tar.short_path if short_path else release_dir_tar.path,
             install_path = info.install_path,
         )

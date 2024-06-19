@@ -1,34 +1,9 @@
 load(
-    ":elixir_tool.bzl",
-    "elixir_tool",
-)
-load(
     ":elixir_vars.bzl",
     "elixir_vars",
 )
 
-package(
-    default_visibility = ["//visibility:public"],
-)
-
-elixir_tool(
-    name = "elixirc_wrapper",
-    out = "elixirc.bash",
-    tool = "elixirc",
-)
-
-elixir_tool(
-    name = "elixir_wrapper",
-    out = "elixir.bash",
-    tool = "elixir",
-)
-
-elixir_tool(
-    name = "iex_wrapper",
-    out = "iex.bash",
-    tool = "iex",
-)
-
 elixir_vars(
     name = "elixir_vars",
+    visibility = ["//visibility:public"],
 )
