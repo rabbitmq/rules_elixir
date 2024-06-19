@@ -87,18 +87,29 @@ jobs:
             build-essential \
             libncurses-dev \
             libssl-dev
+      - name: DISK CACHE
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/disk-cache/
+          key: bazel-${{ github.ref }}
+          restore-keys: |
+            bazel-
       - name: CONFIGURE
         working-directory: examples/internal-elixir
         run: |
-          echo "build --color=yes" >> .bazelrc
+          cat << EOF >> .bazelrc
+            build --disk_cache=/home/runner/disk-cache
+            build --color=yes
+          EOF
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
       - name: BUILD & TEST
         working-directory: examples/internal-elixir
+        env:
+          ELIXIR_ERL_OPTIONS: +fnu
         run: |
           bazelisk test //... \
             --config=ie-26_2 \
             --toolchain_resolution_debug='@@rules_erlang~//tools:toolchain_type' \
             --toolchain_resolution_debug='@@rules_elixir~//:toolchain_type' \
-            --verbose_failures \
-            --action_env PATH="$PATH"
+            --verbose_failures

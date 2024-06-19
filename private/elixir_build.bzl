@@ -83,7 +83,7 @@ tar --extract \\
     --file {archive_path} \\
     --directory $ABS_BUILD_DIR
 
-echo "Building OTP $(cat $ABS_BUILD_DIR/OTP_VERSION) in $ABS_BUILD_DIR"
+echo "Building ELIXIR in $ABS_BUILD_DIR"
 
 trap 'catch $?' EXIT
 catch() {{
