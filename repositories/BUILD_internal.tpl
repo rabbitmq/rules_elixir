@@ -13,7 +13,7 @@ elixir_build(
     name = "elixir_build",
     url = "%{URL}",
     strip_prefix = "%{STRIP_PREFIX}",
-    sha256 = "%{SHA_256}",
+    sha256v = "%{SHA_256}",
 )
 
 elixir_toolchain(
